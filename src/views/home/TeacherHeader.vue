@@ -3,7 +3,7 @@
     <div class="header-fixed flex alignCenter" :style="{'opacity': opacity >= 1 ? 1 : opacity}">
       <div class="name flex_1">{{timeZH}}，张三老师</div>
       <div class="icon-box marginRight32">
-        <img src="./img/icon_record2.png" @click="_jump('/pjrecord')">
+        <img src="./img/icon_medal.png">
         <img src="./img/icon_scan2.png">
       </div>
     </div>
@@ -11,7 +11,7 @@
       <div class="header-bg-top flex alignCenter">
         <div class="name flex_1">{{timeZH}}，张三老师</div>
         <div class="icon-box">
-          <img src="./img/icon_record.png">
+          <img src="./img/icon_medal.png">
           <img src="./img/icon_scan.png">
         </div>
       </div>
@@ -148,7 +148,7 @@
       left: 0;
       width: 100%;
       height: 138px;
-      background: rgba(255,255,255,.8);
+      background-color: #ffffff;
 
       .name{
         color: #262727;

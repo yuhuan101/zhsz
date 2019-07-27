@@ -6,12 +6,13 @@
       </div>
     </div>
     <div class="tab-content">
-      <ul class="list-box clear">
-        <li class="fl" :class="{'marginRight0': (index+1)%4 == 0}" v-for="(item,index) in pjList" :key="index">
-          <img :src="item.url">
-          <p>{{item.title}}</p>
+      <ul class="list-box clear" v-if="pjList.length > 0">
+        <li class="fl" :class="{'marginRight0': (index+1)%4 == 0}" v-for="(item,index) in pjList" :key="index" @click="_select(index)">
+          <img :src="item.icon" :class="{'checked': pjKey == index}">
+          <p>{{item.name}}</p>
         </li>
       </ul>
+      <div v-else class="empty">暂无数据</div>
     </div>
   </div>
 </template>
@@ -22,7 +23,8 @@
     props: ['list','pjList','pjMultiPerson'],
     data() {
       return {
-        popupKey: 1,
+        popupKey: 3,
+        pjKey: 0,
       }
     },
     methods: {
@@ -31,7 +33,12 @@
           return;
         }
         this.popupKey = type;
+        this.$emit('getRewardType',type)
       },
+      _select(key) {
+        this.pjKey = key;
+        this.$emit('getPjInfo',key)
+      }
     }
   }
 </script>
@@ -85,6 +92,10 @@
             width: 90px;
             height: 90px;
             border-radius: 50%;
+            box-sizing: border-box;
+            &.checked {
+              border: 4px solid #33A5FF;
+            }
           }
           p {
             color: #262627;
@@ -92,6 +103,11 @@
             margin-top: 14px;
           }
         }
+      }
+      .empty {
+        height: 120px;
+        line-height: 120px;
+        text-align: center;
       }
     }
   }

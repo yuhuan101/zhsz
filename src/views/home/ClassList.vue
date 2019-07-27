@@ -40,6 +40,7 @@
 </template>
 
 <script>
+  import {HomeApi as API} from '@/utils/api'
   export default {
     name: "ClassList",
     props: ['jlk'],
@@ -54,7 +55,7 @@
       }
     },
     methods: {
-      getList() {
+      async getList () {
         console.log(1)
         if (this.allLoaded) {
           this.moreLoading = true
@@ -64,19 +65,23 @@
           return
         }
         this.moreLoading = true
-        setTimeout(() => {
-          let last = this.list[this.list.length - 1];
-          for (let i = 1; i <= 10; i++) {
-            this.list.push((last - 0) + (i - 0));
-            // if (result.todo_list.length > 0) {
-            //   this.moreLoading = false
-            // } else {
-            //   this.allLoaded = true
-            //   this.moreLoading = true
-            // }
-          }
-          this.moreLoading = false;
-        }, 2500);
+        let data = {
+          teacherCode: 100,
+        };
+        const res = await this.$req.get(API.getTeacherEvaluationClassList, data);
+        // setTimeout(() => {
+        //   let last = this.list[this.list.length - 1];
+        //   for (let i = 1; i <= 10; i++) {
+        //     this.list.push((last - 0) + (i - 0));
+        //     if (result.todo_list.length > 0) {
+        //       this.moreLoading = false
+        //     } else {
+        //       this.allLoaded = true
+        //       this.moreLoading = true
+        //     }
+        //   }
+        //   this.moreLoading = false;
+        // }, 2500);
       },
       jump(title,path) {
         this.$router.push({

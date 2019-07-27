@@ -24,7 +24,7 @@
     <div class="pj-box">
       <div class="pj-top">评价</div>
       <div class="pj-record-box">
-        <v-record-list ref="pjRecord" :type="'student'"></v-record-list>
+        <v-record-list ref="pjRecord" :pjType="'class'" :pjTabList="pjTabList"></v-record-list>
       </div>
     </div>
   </div>
@@ -41,6 +41,17 @@
       'v-slider': Slider,
       'v-record-list': RecordList,
     },
+    data() {
+      return {
+        pjTabList: [
+          {type: 1,name: '全部'},
+          {type: 2,name: '加分'},
+          {type: 3,name: '减分'},
+          {type: 4,name: '奖励勋章'},
+          {type: 5,name: '扣除勋章'}
+        ]
+      }
+    }
   }
 </script>
 

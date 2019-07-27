@@ -74,6 +74,7 @@
   import Search from '@/components/Search.vue'
   import Scroll from '@/components/Scroll.vue'
   import data from './singer.json'
+  import {StudentApi as API} from '@/utils/api'
   const ANCHOR_HEIGHT = 18;
   export default {
     name: "studentList",
@@ -141,15 +142,21 @@
       this.heightList = [];
       this.copyArr = JSON.parse(JSON.stringify(this.data));
       this.setSelectedAll(false)
+      this.getStudentList()
     },
     mounted() {
       document.title = this.title;
-      console.log(this.data)
       this.$nextTick(() => {
         this._calcGroupHeight()
       })
     },
     methods: {
+      async getStudentList() {
+        let data = {
+          classCode: 100,
+        };
+        const res = await this.$req.get(API.getEvaluationClassStudentList, data);
+      },
       getSearch(value) {
         let a = value.replace(/(^\s*)|(\s*$)/g, "");
         if (a == '') {

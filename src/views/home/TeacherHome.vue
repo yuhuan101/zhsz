@@ -76,6 +76,9 @@
     mounted() {
       console.log(2)
       this.loadMore()
+      this.$nextTick(() => {
+        this.$refs.classList.getList()
+      })
     },
     methods: {
       loadMore() {

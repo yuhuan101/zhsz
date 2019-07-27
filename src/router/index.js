@@ -67,6 +67,14 @@ export default new Router({
           },
         },
         {
+          path: '/classmate',
+          name: 'classmate',
+          component: _import('classDT/Classmate'),
+          meta: {
+            title: '排行榜'
+          },
+        },
+        {
           path: '/pjrecord',
           name: 'pjRecord',
           component: _import('pjRecord/Index'),

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import {sctpApi as API} from '@/utils/api'
+  import {FileApi as API} from '@/utils/api'
   const PATH_HEAD = process.env.NODE_ENV == 'development' ? '/api' : '/szxy';
   export default {
     name: "UploadImg",
@@ -51,18 +51,15 @@
           this.$toast('请选择jpg,png,jpeg文件上传');
           return;
         }
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          self.upload(this.result,key)
-        }
+        self.upload(file,key)
       },
       upload(url,key) {
+        let formData = new FormData();
+        formData.append('files',url);
         let vm = this;
-        let imagArr = [];
-        imagArr = imagArr.concat(url);
         let config = {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: {'Content-Type': 'multipart/form-data'},
           onUploadProgress: function (e) {
             //属性lengthComputable主要表明总共需要完成的工作量和已经完成的工作是否可以被测量
             //如果lengthComputable为false，就获取不到e.total和e.loaded
@@ -76,23 +73,20 @@
                   fjpath: '',
                 });
               } else {
-                this.imglists[key].progress = progress;
-                this.imglists[key].url = '';
-                this.imglists[key].fjpath = '';
+                vm.imglists[key].progress = progress;
+                vm.imglists[key].url = '';
+                vm.imglists[key].fjpath = '';
               }
               vm.$emit('getUplaodFile', vm.imglists);
             }
           }
         };
-        let data = {
-          imagArr: JSON.stringify(imagArr)
-        };
-        this.$http.post(API.sfshxq, data, config)
+        this.$http.post(API.uploadFile, formData, config)
           .then(data => {
               if (data.resultCode == 1) {
                 this.imglists[key].progress = '100.00%';
-                this.imglists[key].url = '//' + window.location.host +PATH_HEAD + data.value;
-                this.imglists[key].fjpath = data.value;
+                this.imglists[key].url = data.value[0].absolutePath;
+                this.imglists[key].fjpath = data.value[0].relativePath;
                 this.$emit('getUplaodFile', this.imglists);
               } else {
                 this.$toast(data.resultMessage);

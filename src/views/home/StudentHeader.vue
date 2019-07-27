@@ -14,8 +14,9 @@
       <div class="right">
         <div class="right-top flex alignCenter">
           <div class="name">哈哈</div>
-          <div>三星少年</div>
+          <div class="medal-txt">三星少年</div>
         </div>
+        <div class="right-bottom">一年级(3)班</div>
       </div>
     </div>
   </div>
@@ -59,6 +60,7 @@
         width: 90px;
         height: 90px;
         border-radius: 50%;
+        margin-left: 32px;
         img {
           width: 100%;
           height: 100%;
@@ -85,22 +87,46 @@
     .header-bg {
       height: 320px;
       padding: 0 32px;
-      background-image: url("./img/header_bg.png");
+      background-image: url("./img/student_header_bg.png");
       background-repeat: no-repeat;
       background-size: 100%;
       .avatar {
         width: 120px;
         height: 120px;
         border-radius: 50%;
+        margin-top: 60px;
         img {
           width: 100%;
           height: 100%;
         }
       }
       .right {
+        margin-top: 60px;
         margin-left: 20px;
         .right-top {
           height: 66px;
+          .name {
+            color: #ffffff;
+            font-size: 48px;
+            font-weight: 600;
+          }
+          .medal-txt {
+            width: 108px;
+            height: 36px;
+            line-height: 36px;
+            color: #FFFFFF;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 20px;
+            margin-left: 16px;
+            background-color: #FFB600;
+            border: 2px solid #ffffff;
+          }
+        }
+        .right-bottom {
+          color: #ffffff;
+          font-size: 28px;
+          margin-top: 14px;
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="pj-wrapper" ref="view">
+  <div class="pj-wrapper">
     <!--评价维度-->
     <div class="pj-medal">
       <div class="pj-medal-top text-overflow" @click="showWd">
@@ -7,21 +7,28 @@
         <i class="mintui mintui-back back-icon"></i>
       </div>
       <div class="pj-medal-content">
-        <v-pj-tab ref="pjTab" :list="popupTab" :pjMultiPerson="type" :pjList="pjList" @getRewardType="getRewardType" @getPjInfo="getPjInfo"></v-pj-tab>
+        <v-pj-tab ref="pjTab" :list="popupTab" :pjMultiPerson="type" :pjList="pjList" @getRewardType="getRewardType"></v-pj-tab>
       </div>
     </div>
 
     <div class="pj-content">
       <div class="pj-header">
-        <p class="pj-text">{{pjName}}</p>
+        <p class="pj-text">上课认真</p>
         <p class="py">{{dimensionName}}</p>
       </div>
+      <!--<div class="pj-kc-select">-->
+      <!--<div class="title">课程</div>-->
+      <!--<div class="kcmc" @click="popupVisible=true">-->
+      <!--{{kcmc}}-->
+      <!--<i class="mintui mintui-back back-icon"></i>-->
+      <!--</div>-->
+      <!--</div>-->
       <div class="pj-change-number">
         <div class="title">数值</div>
         <div class="step-box">
-          <span class="span-border reduce" @click="changeMark('reduce',1)">-</span>
+          <span class="span-border reduce" @click="changeMark('reduce')">-</span>
           <span class="content">{{number}}</span>
-          <span class="span-border add" @click="changeMark('add',1)">+</span>
+          <span class="span-border add" @click="changeMark('add')">+</span>
         </div>
       </div>
       <div class="pj-bz">
@@ -41,13 +48,13 @@
       <div class="pj-img-box">
         <div class="title">图片(选填)</div>
         <div class="clear">
-          <div class="fl img-item flex alignCenter justifyCenter" v-for="(item,index) in imgs" :key="index">
-            <div class="del-img-btn" @click="delImg(index)">
+          <div class="fl img-item flex alignCenter justifyCenter">
+            <div class="del-img-btn">
               <img src="@/assets/img/del.png">
             </div>
-            <img class="img" :src="item.url">
-            <div class="progress-box" :style="{'height': item.progress}" v-show="item.progress != '100.00%'"></div>
-            <div class="progress-num" v-show="item.progress != '100.00%'">{{item.progress}}</div>
+            <img class="img" src="https://y.gtimg.cn/music/photo_new/T001R300x300M000000t2qd13dLpae.jpg?max_age=2592000">
+            <div class="progress-box"></div>
+            <div class="progress-num">20%</div>
           </div>
           <div class="fl upload" @click="upload" v-show="imgs.length < 9">
             <div class="jiahao"></div>
@@ -55,17 +62,17 @@
           </div>
         </div>
       </div>
-      <!--学生评分(多人)-->
+      <!--学生评分-->
       <div class="pf-list" v-if="type == 1">
         <div class="title">学生评分</div>
         <div class="student-list">
           <ul>
-            <li class="flex alignCenter" v-for="(item,index) in studentList" :key="index">
-              <div class="name text-overflow">{{item.name}}</div>
+            <li class="flex alignCenter">
+              <div class="name text-overflow">哈哈</div>
               <div class="step-box">
-                <span class="span-border reduce" @click="changeMark('reduce',2,index)">-</span>
-                <span class="content">{{item.number}}</span>
-                <span class="span-border add" @click="changeMark('add',2,index)">+</span>
+                <span class="span-border reduce" @click="changeMark('reduce')">-</span>
+                <span class="content">{{number}}</span>
+                <span class="span-border add" @click="changeMark('add')">+</span>
               </div>
             </li>
           </ul>
@@ -80,25 +87,31 @@
     <!--上传图片-->
     <v-upload-img ref="upload" :imgs="imgs" :maxNumber="maxNumber" @getUplaodFile="getUplaodFile"></v-upload-img>
 
+    <!--关联课程选择器-->
+    <mt-popup v-model="popupVisible" v-roll:visible=popupVisible position="bottom" class="mint-popup">
+      <mt-picker :slots="dataList"  :visible-item-count="5" :show-toolbar="true"  ref="picker" value-key="kmmc" :itemHeight="40">
+        <div class="flex">
+          <div class="picker-btn picker-cancel" @click="popupVisible = false">取消</div>
+          <div class="picker-title"></div>
+          <div class="picker-btn picker-sure" @click="onConfirm">完成</div>
+        </div>
+      </mt-picker>
+    </mt-popup>
+
     <!--维度选择器-->
     <v-wd-select ref="wd" @getWdInfo="getWdInfo" @getWdName="getWdName"></v-wd-select>
-
-    <!--评价成功提示-->
-    <v-modal-success ref="success" :tip="'评价成功'" :type="1"></v-modal-success>
   </div>
 </template>
 
 <script>
   import WdSelect from '@/components/wdSelect/WdSelect.vue'
   import UploadImg from '@/components/UploadImg.vue'
-  import Modal from '@/components/modal/Modal.vue'
   import PjTabList from '@/components/pjTab/PjTabList.vue'
   import {PjApi as API} from '@/utils/api'
   export default {
     name: "PjStudent",
     components: {
       'v-wd-select': WdSelect,
-      'v-modal-success': Modal,
       'v-pj-tab': PjTabList,
       'v-upload-img': UploadImg,
     },
@@ -109,12 +122,11 @@
         gradeCode: '', // 年级代码
         classCode: '', // 班级代码
         number: 1,
-        imgs: [], // 上传图片
+        imgs: [],
         maxNumber: 9, //最大支持上传多少张图片
         popupVisible: false,
         kcmc: '不关联',
         kcList: [],
-        pjName: '', // 评价项名称
         dimensionId: '', // 维度编号
         dimensionName: '', // 维度名称
         rewardType: 3, // 默认显示加分
@@ -149,8 +161,6 @@
         this.studentList.forEach((c) => {
           title += c.name + '、' ;
         });
-        title = title.substring(0,title.length-1);
-        this.setSstudentList(this.studentList);
         document.title = '评价' + title;
       } else {
         document.title = '评价' + this.title;
@@ -170,7 +180,6 @@
         const res = await this.$req.get(API.list, data);
         if (res.resultCode == 1) {
           this.pjList = res.value;
-          this.pjName = res.value.length > 0 ? res.value[0].name : '暂无评价项'
         }
       },
       getWdName(data) {
@@ -185,23 +194,10 @@
       },
       getRewardType(type) {
         this.rewardType = type;
-        this.getpjxList()
       },
-      getPjInfo(key) {
-        this.pjName = this.pjList[key].name;
-      },
-      changeMark(type,lb,key) {
-        if (lb == 1) { // 1,批量设置数值，2，单个设置
-          this.number = type == 'add' ? (this.number - 0)+(0.1 - 0) : (this.number - 0)-(0.1 - 0);
-          this.number = this.number <= 0 ? 0 : this.number.toFixed(1);
-          this.studentList.forEach((c) => {
-            c.number = (c.number - 0) + (this.number - 0);
-          })
-        } else {
-          let number = type == 'add' ? (this.studentList[key].number - 0)+(0.1 - 0) : (this.studentList[key].number - 0)-(0.1 - 0);
-          number = number <= 0 ? 0 : number.toFixed(1);
-          this.studentList[key].number = number;
-        }
+      changeMark(type) {
+        this.number = type == 'add' ? (this.number - 0)+(0.1 - 0) : (this.number - 0)-(0.1 - 0);
+        this.number = this.number <= 0 ? 0 : this.number.toFixed(1);
       },
       setPY() {
         this.py = '积极预习，认真听讲，勤做笔记，按时完成作业'
@@ -209,19 +205,11 @@
       showWd() {
         this.$refs.wd.show();
       },
-      setSstudentList(list) {
-        list.forEach((c) => {
-          this.$set(c,'number',1)
-        })
-      },
       upload() {
         this.$refs.upload.fileClick();
       },
       getUplaodFile(data) {
         this.imgs = data;
-      },
-      delImg(key) {
-        this.imgs.splice(key,1)
       },
       onConfirm() {
 
@@ -289,6 +277,26 @@
       color: #262627;
       font-size: 28px;
       font-weight: 600;
+    }
+    .pj-kc-select {
+      margin-top: 34px;
+      .kcmc {
+        position: relative;
+        height: 88px;
+        line-height: 88px;
+        color: #B6B8B8;
+        font-size: 28px;
+        padding-left: 20px;
+        border: 1px solid #EFF1F3;
+        .back-icon {
+          position: absolute;
+          right: 32px;
+          top: 0;
+          font-size: 25px;
+          display: inline-block;
+          transform: rotate(-90deg);
+        }
+      }
     }
     .pj-change-number {
       margin-top: 34px;
@@ -397,9 +405,8 @@
         position: relative;
         width: 200px;
         height: 200px;
-        margin-right: 20px;
+        margin-right: 42px;
         .img {
-          position: absolute;
           max-height: 200px;
           max-width: 200px;
         }

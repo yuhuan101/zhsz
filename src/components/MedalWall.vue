@@ -19,7 +19,7 @@
   .medal-wall {
     position: relative;
     width: 100%;
-    height: 584px;
+    height: 570px;
     margin-top: 54px;
     padding-top: 66px;
     background-image: url(/static/img/wall.png);

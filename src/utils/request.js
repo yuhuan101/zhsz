@@ -11,10 +11,11 @@ axios.interceptors.request.use(config => {
   if (config.method === 'post' && config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
     config.data = qs.stringify(config.data)
   }
+  config.headers['Authorization'] = 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxNDM4OTk5IiwidXNlcklkIjoiYjc2NTkxMzcwOGE5NDllZjg2NTZlZGQ0ZjhhZjdhM2YiLCJ1c2VyTmFtZSI6IuWkqemfs-S4reWtpueuoeeQhuWRmCIsInh4ZG0iOiIxNDM4IiwidHlwZSI6IjIiLCJleHBpcmUiOjE1NjQyODA5MDYzODF9.VhckakKbZJewrs07n39KFKzv0e8XNygTUXacRNBraiQu3DeU-qq_PogBzQ4Y1621ZAMjs66_UUzyb2HgJcq4ACEQ5MgdPg282hToG8XE2RWnnjzXSdxBT0IaICdfpfg3Ar3T7M4ZPquV3k9HbjXYmEvhdHBR7eI-L0sg4TNWdyo';
   // if (config.data && config.data.hasToken && config.data.hasToken == 'no'){ // 不写入token
   //
   // } else {
-  //     config.headers['token'] = Vue.cookie.get(login_token) || ''
+  //     config.headers['Authorization'] = Vue.cookie.get(login_token) || ''
   // }
   return config
 }, (error) => {

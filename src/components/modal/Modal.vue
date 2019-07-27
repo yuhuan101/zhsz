@@ -2,11 +2,11 @@
   <div class="success-box" v-if="show">
     <div class="tip-box">
       <div class="tip-header">
-        <img class="pj_top" src="/static/img/pj_success_top.png">
+        <img class="pj_top" src="/static/img/pj_success_top.png" v-if="type == 1">
       </div>
       <div class="tip-content">
         <img src="/static/img/pj_success.png">
-        <p>评价成功</p>
+        <p>{{tip}}</p>
       </div>
     </div>
   </div>
